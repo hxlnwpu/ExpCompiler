@@ -30,19 +30,14 @@ typedef struct treeNode
     TokenNode attr;
 } TreeNode;
 
-struct GEN_CODE{      //s四元式结构
-        char op[10];                         // operation, it's maybe a '*'    or '<' or 'if' and so on, "_" means nothing
-        char R1[20];                         // operate object 1
-        char R2[20];                         // operate object 2
-        char des[20];                        // destination or answer of   this operation
-};
+
 
 TokenNode token;   //单个token，用于构造语法树，是expr的元素
 TokenNode expr[256]; //用一个结构体数组存放识别出的token,类似<attr,value>
 int  flag=0;    //用于指示expr下标
 stack<TokenNode> OPND;  //存放操作数或运算结果
 vector<TokenNode> rpn;   //存放得到的逆波兰式，以便后续操作
-TokenNode Vtemp[50]={ };    //此处可用vector，动态分配空间和赋值，但有问题未解决，先这样写
+TokenNode Vtemp[50]={ };    
 
 void scan(TokenNode* tokenlist,char* filename);    //扫描获得token
 void fscan(TokenNode* expression,char* filename);   ////扫描文件获得token,支持多字符标识符和数字
@@ -53,7 +48,7 @@ TreeNode * factor();//factor->NUM||ID||(exp)
 TreeNode * newNode(); //构造语法树的过程中分配树节点
 void TreePrint(TreeNode * T,int level);  //按照树形打印
 void postOrderTraverse(TreeNode *T); //后序遍历语法树
-void printFef(vector<TokenNode> fexp); //输出四元式
+void printFef(vector<TokenNode> fexp); //输出四元式及汇编指令
 char *rand_str(char *str); //随机字符串生成
 
 
