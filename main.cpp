@@ -37,7 +37,7 @@ TokenNode expr[256]; //用一个结构体数组存放识别出的token,类似<attr,value>
 int  flag=0;    //用于指示expr下标
 stack<TokenNode> OPND;  //存放操作数或运算结果
 vector<TokenNode> rpn;   //存放得到的逆波兰式，以便后续操作
-TokenNode Vtemp[50]={ };    
+TokenNode Vtemp[50]={ };
 
 void scan(TokenNode* tokenlist,char* filename);    //扫描获得token
 void fscan(TokenNode* expression,char* filename);   ////扫描文件获得token,支持多字符标识符和数字
@@ -421,12 +421,13 @@ char *rand_str(char *str)
 void printFef(vector<TokenNode> fexp)
 {
     int m=0,n=0;
-    TokenNode temp;
+    TokenNode temp,optemp;
     char sAsm[4][50];
     while(m<fexp.size())
     {
         if(fexp.at(m).op>=2)    //输出四元式<op s1,s2,dest>
         {
+            //optemp=fexp.at(m);
             cout<<fexp.at(m).stringValue<<" ";
             strcpy(sAsm[0],fexp.at(m).stringValue);
             temp=OPND.top();
@@ -440,19 +441,19 @@ void printFef(vector<TokenNode> fexp)
             OPND.pop();
             OPND.push(Vtemp[n]);
             cout<<"汇编指令如下:"<<endl;
-            if(fexp.at(m).op=PLUS)
+            if(fexp.at(m).op==PLUS)
             {
                 cout<<"      "<<"mov "<<"ax "<<sAsm[1]<<endl;
                 cout<<"      "<<"add "<<"ax "<<sAsm[2]<<endl;
-                cout<<"      "<<"mov "<<sAsm[3]<<" "<<sAsm[1]<<endl;
+                cout<<"      "<<"mov "<<sAsm[3]<<" "<<"ax"<<endl;
             }
-            else if(fexp.at(m).op=MINUS)
+            else if(fexp.at(m).op==MINUS)
             {
                 cout<<"      "<<"mov "<<"ax "<<sAsm[1]<<endl;
                 cout<<"      "<<"sub "<<"ax "<<sAsm[2]<<endl;
-                cout<<"      "<<"mov "<<sAsm[3]<<" "<<sAsm[1]<<endl;
+                cout<<"      "<<"mov "<<sAsm[3]<<" "<<"ax"<<endl;
             }
-            else if(fexp.at(m).op=TIMES)
+            else if(fexp.at(m).op==TIMES)
             {
                 cout<<"      "<<"mov "<<"ax "<<sAsm[1]<<endl;
                 cout<<"      "<<"mov "<<"bx "<<sAsm[2]<<endl;
@@ -460,7 +461,7 @@ void printFef(vector<TokenNode> fexp)
                 cout<<"      "<<"mov "<<sAsm[3]<<" "<<"ax"<<endl;
 
             }
-            else if(fexp.at(m).op=OVER)
+            else if(fexp.at(m).op==OVER)
             {
                 cout<<"      "<<"mov "<<"ax "<<sAsm[1]<<endl;
                 cout<<"      "<<"mov "<<"bx "<<sAsm[2]<<endl;
